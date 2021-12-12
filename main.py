@@ -116,6 +116,75 @@ def enqueue(voice_client, guild, source):
 @bot.event
 async def on_ready():
     print('Ready!')
+    await client.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.playing,
+            name=f'{PREFIX}help | {len(client.guilds)}サーバーで稼働中'))
+
+@bot.event
+async def on_guild_join(guild):
+    await client.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.playing,
+            name=f'{PREFIX}help | {len(client.guilds)}サーバーで稼働中'))
+
+@bot.event
+async def on_guild_leave(guild):
+    await client.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.playing,
+            name=f'{PREFIX}help | {len(client.guilds)}サーバーで稼働中'))
+
+@bot.command(name='help')
+async def help(ctx):
+    helpEmbed = discord.Embed(title="Help / ヘルプ",description="")
+    helpEmbed.add_field(
+        name = "v!ping",
+        value = "応答速度を測定します。"
+    )
+    helpEmbed.add_field(
+        name = "v!help",
+        value = "ヘルプを表示します。"
+    )
+    helpEmbed.add_field(
+        name = "v!invite",
+        value = "招待リンクを表示します。"
+    )
+    helpEmbed.add_field(
+        name = "v!join",
+        value = "VCに参加します。"
+    )
+    helpEmbed.add_field(
+        name = "v!dc",
+        value = "VCから切断します。"
+    )
+    helpEmbed.add_field(
+        name = "v!setvoice [ボイス名]",
+        value = "喋る人を変更します。ボイス名なしでボイス一覧を表示します。"
+    )
+    helpEmbed.add_field(
+        name = "v!dict add [テキスト] [読み上げ]",
+        value = "辞書に単語を追加します。"
+    )
+    helpEmbed.add_field(
+        name = "v!gdict add [テキスト] [読み上げ]",
+        value = "全体辞書に単語を追加します。※運営のみ"
+    )
+    helpEmbed.add_field(
+        name = "v!premium add [サーバーID]",
+        value = "有料サーバーを追加します。※運営のみ"
+    )
+    embed.set_footer(text="Developed by cron",
+                     icon_url="https://cdn.discordapp.com/avatars/731503872098697226/f4aeb81ec1d493ed2b491aaed9103f9c.png")
+    ctx.message.channel.send(embed=helpEmbed)
+
+@bot.command(name='invite')
+async def invite(ctx):
+    ctx.send(INVITE_LINK)
+
+@bot.command(name='ping')
+async def ping(ctx):
+    ctx.send(f"Ping: {round(bot.latency * 1000)}ms")
 
 
 @bot.command(name='premium')
